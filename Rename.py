@@ -13,6 +13,10 @@ def main():
             cdPath.replace('\\','/')
         elif '/' in cdPath:
             cdPath
+        elif (' ' in cdPath):
+            file_name, cdPath = cdPath.split(' ')
+            find(file_name.strip(), cdPath.strip())
+            file_rename()
         else:
             print(Style.BRIGHT + colored('Invalid, Try again','red'))
             main()
@@ -24,6 +28,9 @@ def main():
 
     print(Style.BRIGHT + colored(os.getcwd(),'yellow'))
 
+    file_rename()
+
+def file_rename():
     for f in os.listdir():
         print(colored(f,'cyan','on_magenta'))
         f_name, f_ext = os.path.splitext(f)
@@ -60,6 +67,11 @@ def main():
     sys.exit(
     print(colored('No Files','yellow'))
     ,main())
+
+def find(name, path):
+    for root, dirs, files in os.walk(path):
+        if name in files:
+            return os.path.join(root, name)
 
 if __name__ == '__main__':
             sys.exit(main())

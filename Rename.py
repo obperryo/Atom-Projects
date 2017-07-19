@@ -57,8 +57,9 @@ def main():
         else:
             print(Style.BRIGHT + 'Next file is')
 
+    sys.exit(
     print(colored('No Files','yellow'))
-    main() 
+    ,main()) 
 
 if __name__ == '__main__':
             main()

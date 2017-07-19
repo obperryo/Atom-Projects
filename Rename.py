@@ -59,7 +59,7 @@ def main():
 
     sys.exit(
     print(colored('No Files','yellow'))
-    ,main()) 
+    ,main())
 
 if __name__ == '__main__':
-            main()
+            sys.exit(main())

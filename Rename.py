@@ -13,13 +13,12 @@ def main():
             cdPath.replace('\\','/')
         elif '/' in cdPath:
             cdPath
-        elif (' ' in cdPath):
-            file_name, cdPath = cdPath.split(' ')
-            find(file_name.strip(), cdPath.strip())
-            file_rename()
+        elif ' ' in cdPath:
+            file_rename(cdPath)
         else:
             print(Style.BRIGHT + colored('Invalid, Try again','red'))
             main()
+
     try:
         os.chdir(cdPath.strip())
     except:
@@ -28,9 +27,42 @@ def main():
 
     print(Style.BRIGHT + colored(os.getcwd(),'yellow'))
 
-    file_rename()
+    rename_files()
 
-def file_rename():
+def file_rename(name):
+    file_name, f_rename = name.split(' ')
+    n, e = os.path.splitext(file_name)
+    ren, re = os.path.splitext(f_rename)
+
+    try:
+        found = find(file_name.strip())
+        print(found)
+    except:
+        print('unfound')
+        main()
+
+    os.chdir(found)
+    print(Style.BRIGHT + colored(os.getcwd(),'yellow'))
+
+    for f in os.listdir():
+        print(colored(f,'cyan','on_magenta'))
+        f_name, f_ext = os.path.splitext(f)
+        f_full = colored(f_name,'cyan')+colored(f_ext,'magenta')
+        print( f_full )
+        print(colored(f_name,'cyan'))
+
+        while True:
+            print('Press Enter to rename or Escape to exit...')
+            key = ord(getch())
+            if key == 27:
+                print('Good Bye')
+                raise SystemExit
+            elif key ==13:
+                break
+        os.renames(f, f_rename)
+        print('Rename Complete')
+
+def rename_files():
     for f in os.listdir():
         print(colored(f,'cyan','on_magenta'))
         f_name, f_ext = os.path.splitext(f)
@@ -64,14 +96,12 @@ def file_rename():
         else:
             print(Style.BRIGHT + 'Next file is')
 
-    sys.exit(
-    print(colored('No Files','yellow'))
-    ,main())
-
-def find(name, path):
-    for root, dirs, files in os.walk(path):
+def find(name):
+    for root, dirs, files in os.walk(os.path(name)):
         if name in files:
             return os.path.join(root, name)
 
 if __name__ == '__main__':
-            sys.exit(main())
+            main()
+            sys.exit(print(colored('No Files','yellow'))
+            ,main())

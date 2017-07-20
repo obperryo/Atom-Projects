@@ -25,15 +25,15 @@ def main():
 
     print(Style.BRIGHT + colored(os.getcwd(),'yellow'))
 
-    if os.path.isfile(cdPath):
+    if  os.path.exists(cdPath):
         filehandles()
 
     sys.exit(print(colored('No Files','yellow')), main())
 
 def filehandles():
-    filenames = input('file to rename and its new name')
+    filenames = input('file to rename and its new name: ')
     if filenames.strip():
-        if ' ' and '.' in filenames:
+        if ',' and '.' in filenames:
             rename_file(filenames)
         else:
             print('need file name with extension and its new name with its extension, or leave blank and do multiple')
@@ -42,7 +42,7 @@ def filehandles():
         rename_files()
 
 def rename_file(filename):
-    file_name, file_rename = filename.split(' ')
+    file_name, file_rename = filename.split(',')
     fname, fext = os.path.splitext(file_name)
     frename, renamext = os.path.splitext(file_rename)
 
@@ -56,7 +56,7 @@ def rename_file(filename):
     print(Style.BRIGHT + colored(os.getcwd(),'yellow'))
 
     print(colored(file_name,'cyan','on_magenta'))
-    fulln = colored(n,'cyan')+colored(e,'magenta')
+    fulln = colored(fname,'cyan')+colored(fext,'magenta')
     print( file_full )
     print(colored(f_name,'cyan'))
 

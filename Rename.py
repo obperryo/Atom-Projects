@@ -13,8 +13,6 @@ def main():
             cdPath.replace('\\','/')
         elif '/' in cdPath:
             cdPath
-        elif ' ' in cdPath:
-            file_rename(cdPath)
         else:
             print(Style.BRIGHT + colored('Invalid, Try again','red'))
             main()
@@ -27,12 +25,26 @@ def main():
 
     print(Style.BRIGHT + colored(os.getcwd(),'yellow'))
 
-    rename_files()
+    if os.path.isfile(cdPath):
+        filehandles()
 
-def file_rename(name):
-    file_name, f_rename = name.split(' ')
-    n, e = os.path.splitext(file_name)
-    ren, re = os.path.splitext(f_rename)
+    sys.exit(print(colored('No Files','yellow')), main())
+
+def filehandles():
+    filenames = input('file to rename and its new name')
+    if filenames.strip():
+        if ' ' and '.' in filenames:
+            rename_file(filenames)
+        else:
+            print('need file name with extension and its new name with its extension, or leave blank and do multiple')
+            files()
+    else:
+        rename_files()
+
+def rename_file(filename):
+    file_name, file_rename = filename.split(' ')
+    fname, fext = os.path.splitext(file_name)
+    frename, renamext = os.path.splitext(file_rename)
 
     try:
         found = find(file_name.strip())
@@ -41,32 +53,29 @@ def file_rename(name):
         print('unfound')
         main()
 
-    os.chdir(found)
     print(Style.BRIGHT + colored(os.getcwd(),'yellow'))
 
-    for f in os.listdir():
-        print(colored(f,'cyan','on_magenta'))
-        f_name, f_ext = os.path.splitext(f)
-        f_full = colored(f_name,'cyan')+colored(f_ext,'magenta')
-        print( f_full )
-        print(colored(f_name,'cyan'))
+    print(colored(file_name,'cyan','on_magenta'))
+    fulln = colored(n,'cyan')+colored(e,'magenta')
+    print( file_full )
+    print(colored(f_name,'cyan'))
 
-        while True:
-            print('Press Enter to rename or Escape to exit...')
-            key = ord(getch())
-            if key == 27:
-                print('Good Bye')
-                raise SystemExit
-            elif key ==13:
-                break
-        os.renames(f, f_rename)
-        print('Rename Complete')
+    while True:
+        print('Press Enter to rename or Escape to exit...')
+        key = ord(getch())
+        if key == 27:
+            print('Good Bye')
+            raise SystemExit
+        elif key ==13:
+            break
+    os.renames(file_name, file_rename)
+    print('Rename Complete')
 
 def rename_files():
     for f in os.listdir():
         print(colored(f,'cyan','on_magenta'))
         f_name, f_ext = os.path.splitext(f)
-        f_full = colored(f_name,'cyan')+colored(f_ext,'magenta')
+        full_n = colored(f_name,'cyan')+colored(f_ext,'magenta')
         print( f_full )
         print(colored(f_name,'cyan'))
 
@@ -97,11 +106,9 @@ def rename_files():
             print(Style.BRIGHT + 'Next file is')
 
 def find(name):
-    for root, dirs, files in os.walk(os.path(name)):
+    for root, dirs, files in os.walk(os.getcwd()):
         if name in files:
-            return os.path.join(root, name)
+            return os.path.join(root,name)
 
 if __name__ == '__main__':
             main()
-            sys.exit(print(colored('No Files','yellow'))
-            ,main())

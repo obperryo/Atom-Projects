@@ -33,32 +33,32 @@ def main():
 def filehandles():
     filenames = input('file to rename and its new name: ')
     if filenames.strip():
-        if ',' and '.' in filenames:
+        if ',' in filenames:
             rename_file(filenames)
         else:
-            print('need file name with extension and its new name with its extension, or leave blank and do multiple')
-            files()
+            print('need file name and its new name, or leave blank and do multiple')
+            main()
     else:
         rename_files()
 
 def rename_file(filename):
     file_name, file_rename = filename.split(',')
-    fname, fext = os.path.splitext(file_name)
-    frename, renamext = os.path.splitext(file_rename)
 
     try:
-        found = find(file_name.strip())
-        print(found)
+        f = find(file_name.strip())
+        print(f)
     except:
         print('unfound')
         main()
 
     print(Style.BRIGHT + colored(os.getcwd(),'yellow'))
-
+    fname, fext = os.path.splitext(f)
     print(colored(file_name,'cyan','on_magenta'))
     fulln = colored(fname,'cyan')+colored(fext,'magenta')
-    print( file_full )
-    print(colored(f_name,'cyan'))
+    print( fulln )
+    print(colored(fname,'cyan'))
+    print('{}{}'.format(Style.BRIGHT + colored(file_rename.strip(),'cyan' ), colored(fext.strip(),'magenta')))
+    frename = '{}{}'.format(file_rename.strip(), fext.strip())
 
     while True:
         print('Press Enter to rename or Escape to exit...')
@@ -68,7 +68,7 @@ def rename_file(filename):
             raise SystemExit
         elif key ==13:
             break
-    os.renames(file_name, file_rename)
+    os.renames(found, frename)
     print('Rename Complete')
 
 def rename_files():
@@ -106,9 +106,9 @@ def rename_files():
             print(Style.BRIGHT + 'Next file is')
 
 def find(name):
-    for root, dirs, files in os.walk(os.getcwd()):
+    for root, dirs, files in os.walk('.'):
         if name in files:
-            return os.path.join(root,name)
+            return os.path.basename(name)
 
 if __name__ == '__main__':
             main()

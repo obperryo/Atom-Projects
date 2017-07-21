@@ -25,7 +25,7 @@ def main():
 
     print(Style.BRIGHT + colored(os.getcwd(),'yellow'))
 
-    if  os.path.exists(cdPath):
+    if  os.listdir(cdPath):
         filehandles()
 
     sys.exit(print(colored('No Files','yellow')), main())

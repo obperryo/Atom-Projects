@@ -45,13 +45,14 @@ def rename_file(filename):
     file_name, file_rename = filename.split(',')
 
     try:
-        f = os.path.basename(find(file_name.strip()))
+        foundfile = find(file_name.strip())
+        f = os.path.basename(foundfile)
         print(f)
     except:
         print('unfound')
         main()
 
-    os.chdir(os.path.dirname(find(file_name.strip())))
+    os.chdir(os.path.dirname(foundfile))
     print(Style.BRIGHT + colored(os.getcwd(),'yellow'))
     fname, fext = os.path.splitext(f)
     print(colored(file_name,'cyan','on_magenta'))

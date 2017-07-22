@@ -34,7 +34,7 @@ def filehandles():
     filenames = input('file to rename and its new name: ')
     if filenames.strip():
         if ',' in filenames:
-            rename_file(filenames)
+            rename_file(filenames.strip())
         else:
             print('need file name and its new name, or leave blank and do multiple')
             filehandles()
@@ -45,12 +45,13 @@ def rename_file(filename):
     file_name, file_rename = filename.split(',')
 
     try:
-        f = find(file_name)
+        f = os.path.basename(find(file_name.strip()))
         print(f)
     except:
         print('unfound')
         main()
 
+    os.chdir(os.path.dirname(find(file_name.strip())))
     print(Style.BRIGHT + colored(os.getcwd(),'yellow'))
     fname, fext = os.path.splitext(f)
     print(colored(file_name,'cyan','on_magenta'))
@@ -108,7 +109,7 @@ def rename_files():
 def find(name):
     for root, dirs, files in os.walk('.'):
         if name in files:
-            return os.path.basename(name)
+            return os.path.join(root, name)
 
 if __name__ == '__main__':
             main()

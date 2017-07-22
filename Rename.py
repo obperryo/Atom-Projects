@@ -68,7 +68,7 @@ def rename_file(filename):
             raise SystemExit
         elif key ==13:
             break
-    os.renames(found, frename)
+    os.renames(f, frename)
     print('Rename Complete')
 
 def rename_files():

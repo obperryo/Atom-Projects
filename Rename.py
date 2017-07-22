@@ -45,7 +45,7 @@ def rename_file(filename):
     file_name, file_rename = filename.split(',')
 
     try:
-        f = find(file_name.strip())
+        f = find(file_name)
         print(f)
     except:
         print('unfound')

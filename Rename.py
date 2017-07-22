@@ -37,7 +37,7 @@ def filehandles():
             rename_file(filenames)
         else:
             print('need file name and its new name, or leave blank and do multiple')
-            main()
+            filehandles()
     else:
         rename_files()
 

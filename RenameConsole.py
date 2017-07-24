@@ -18,10 +18,11 @@ class Console(cmd.Cmd):
         os.chdir(directory)
         self.prompt = os.getcwd()
 
-    def do_rename(self, filename, rename, directory='C:\\Users\\{}\\Downloads\\Rename Files'.format(user)):
+    def do_rename(self, filename, rename, directory='C:\\Users\\' + user + '\\Downloads\\Rename Files'):
         do_find(filename)
 
-    def do_renames(self, filext=None, directory='C:\\Users\\{}\\Downloads\\Rename Files'.format(user)):
+    def do_renames(self, filext=None, directory='C:\\Users\\' + user + '\\Downloads\\Rename Files'):
+        #os.chdir()
         for f in os.listdir():
             print(colored(f,'cyan','on_magenta'))
             f_name, f_ext = os.path.splitext(f)
@@ -35,10 +36,10 @@ class Console(cmd.Cmd):
                 if new_name.lower() == 'exit':
                     print('Good Bye')
                     raise SystemExit
-                elif new_name.lower() == 'cd':
-                    main()
+                elif 'cd' in new_name.lower():
+                    self.do_cd(directory='.')
                 else:
-                    print( f_full )
+                    print( full_n )
                     print('{}{}'.format(Style.BRIGHT + colored(new_name.strip(),'cyan' ), colored(f_ext.strip(),'magenta')))
                     rename = '{}{}'.format(new_name.strip(), f_ext.strip())
 

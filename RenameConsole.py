@@ -3,7 +3,11 @@ from colorama import init, Style, Fore
 from termcolor import colored
 from msvcrt import getch
 
+user = os.path.expanduser('~' + getpass.getuser())
+init(autoreset=True)
+
 class Console(cmd.Cmd):
+
 
     def __init__(self):
         cmd.Cmd.__init__(self)
@@ -11,18 +15,36 @@ class Console(cmd.Cmd):
         self.intro = self.do_help(arg=None)
         os.chdir('C:\\')
 
-    init(autoreset=True)
-    user = getpass.getuser()
+    def do_cd(self, arg='.'):
+        try:
+            os.chdir(arg)
+        except:
+            print(arg + ' is not a path')
+        self.prompt = os.getcwd() + ' '
 
-    def do_cd(self, directory='.'):
-        os.chdir(directory)
-        self.prompt = os.getcwd()
+    def do_rename(self, args):
+        if len(args.split()) == 3:
+            filename, rename, directory = args.split()
+        elif len(args.split()) == 2:
+            filename, rename = args.split()
+            directory = user + '\\Downloads'
 
-    def do_rename(self, filename, rename, directory='C:\\Users\\' + user + '\\Downloads\\Rename Files'):
-        do_find(filename)
+        try:
+            os.chdir(directory)
+        except:
+            print(directory + ' is not a path')
 
-    def do_renames(self, filext=None, directory='C:\\Users\\' + user + '\\Downloads\\Rename Files'):
-        #os.chdir()
+        self.do_find(filename)
+
+    def do_renames(self):
+        filext
+        user = os.path.expanduser('~' + getpass.getuser())
+        directory = user + '\\Downloads\\Rename Files'
+        try:
+            os.chdir(directory)
+        except:
+            print(directory + ' is not a path')
+
         for f in os.listdir():
             print(colored(f,'cyan','on_magenta'))
             f_name, f_ext = os.path.splitext(f)
@@ -33,11 +55,14 @@ class Console(cmd.Cmd):
             new_name = input( Style.BRIGHT + colored('Enter new name: ','cyan' ))
 
             if new_name.strip():
-                if new_name.lower() == 'exit':
-                    print('Good Bye')
-                    raise SystemExit
+                if new_name.lower() == 'cancel':
+                    self.prompt = 'What now? '
+                    break
                 elif 'cd' in new_name.lower():
-                    self.do_cd(directory='.')
+                    command, path = new_name.split()
+                    self.do_cd(directory = path or '.')
+                    self.do_renames(filext=None, directory='.')
+                    break
                 else:
                     print( full_n )
                     print('{}{}'.format(Style.BRIGHT + colored(new_name.strip(),'cyan' ), colored(f_ext.strip(),'magenta')))
@@ -56,15 +81,20 @@ class Console(cmd.Cmd):
             else:
                 print(Style.BRIGHT + 'Next file is')
 
-    def do_find(self, name, directory='.'):
+    def do_find(self, args):
+        if len(args.split()) == 2:
+            name, directory = args.split(' ')
+        elif len(args.split()) == 1:
+            name = args
+            directory = '.'
+
         for root, dirs, files in os.walk(directory):
             if name in files:
-                print(os.path.join(root, name))
-                return os.path.join(root, name)
+                os.chdir(os.path.dirname(os.path.join(root, name)))
+                self.prompt = os.getcwd() + ' '
 
     def do_EOF(self, line):
         return True
 
 if __name__ == '__main__':
     Console().cmdloop()
-    console = Console()

@@ -90,7 +90,7 @@ def rename_files():
             elif new_name.lower() == 'cd':
                 main()
             else:
-                print( f_full )
+                print( full_n )
                 print('{}{}'.format(Style.BRIGHT + colored(new_name.strip(),'cyan' ), colored(f_ext.strip(),'magenta')))
                 rename = '{}{}'.format(new_name.strip(), f_ext.strip())
 

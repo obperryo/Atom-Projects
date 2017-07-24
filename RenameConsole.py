@@ -7,14 +7,16 @@ class Console(cmd.Cmd):
 
     def __init__(self):
         cmd.Cmd.__init__(self)
-        self.prompt = '^how may i help you? '
-        intro = self.do_help(arg=None)
+        self.prompt = '^how may I help you? '
+        self.intro = self.do_help(arg=None)
+        os.chdir('C:\\')
 
     init(autoreset=True)
     user = getpass.getuser()
 
-    def cd(self, directory):
-        chdir(directory)
+    def do_cd(self, directory='.'):
+        os.chdir(directory)
+        self.prompt = os.getcwd()
 
     def do_rename(self, filename, rename, directory='C:\\Users\\{}\\Downloads\\Rename Files'.format(user)):
         do_find(filename)
@@ -24,7 +26,7 @@ class Console(cmd.Cmd):
             print(colored(f,'cyan','on_magenta'))
             f_name, f_ext = os.path.splitext(f)
             full_n = colored(f_name,'cyan')+colored(f_ext,'magenta')
-            print( f_full )
+            print( full_n )
             print(colored(f_name,'cyan'))
 
             new_name = input( Style.BRIGHT + colored('Enter new name: ','cyan' ))
@@ -53,8 +55,8 @@ class Console(cmd.Cmd):
             else:
                 print(Style.BRIGHT + 'Next file is')
 
-    def do_find(self, name):
-        for root, dirs, files in os.walk('.'):
+    def do_find(self, name, directory='.'):
+        for root, dirs, files in os.walk(directory):
             if name in files:
                 print(os.path.join(root, name))
                 return os.path.join(root, name)

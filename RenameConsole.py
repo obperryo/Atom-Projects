@@ -34,14 +34,49 @@ class Console(cmd.Cmd):
         except:
             print(directory + ' is not a path')
 
-        self.do_find(filename)
+        try:
+            foundfile = self.do_find(filename)
+            f = os.path.basename(foundfile)
+            print(f)
+        except:
+            print('unfound')
+            main()
 
-    def do_renames(self):
-        filext
-        user = os.path.expanduser('~' + getpass.getuser())
-        directory = user + '\\Downloads\\Rename Files'
+        os.chdir(os.path.dirname(foundfile))
+        print(Style.BRIGHT + colored(os.getcwd(),'yellow'))
+        fname, fext = os.path.splitext(f)
+        print(colored(filename,'cyan','on_magenta'))
+        fulln = colored(fname,'cyan')+colored(fext,'magenta')
+        print( fulln )
+        print(colored(fname,'cyan'))
+        print('{}{}'.format(Style.BRIGHT + colored(rename.strip(),'cyan' ), colored(fext.strip(),'magenta')))
+        frename = '{}{}'.format(rename.strip(), fext.strip())
+
+        while True:
+            print('Press Enter to rename or Escape to exit...')
+            key = ord(getch())
+            if key == 27:
+                print('Good Bye')
+                raise SystemExit
+            elif key ==13:
+                break
+        os.renames(f, frename)
+        print('Rename Complete')
+
+    def do_renames(self, args):
+        if len(args.split()) == 2:
+            filext, directory = args.split()
+        elif len(args.split()) == 1:
+            if '*.' in args:
+                filext = args
+                directory = '.'
+            elif '/' or '\\' in args:
+                directory = args
+        else:
+            directory = user + '\\Downloads\\Rename Files'
         try:
             os.chdir(directory)
+            print(os.getcwd())
         except:
             print(directory + ' is not a path')
 
@@ -60,8 +95,8 @@ class Console(cmd.Cmd):
                     break
                 elif 'cd' in new_name.lower():
                     command, path = new_name.split()
-                    self.do_cd(directory = path or '.')
-                    self.do_renames(filext=None, directory='.')
+                    self.do_cd(path or '.')
+                    self.do_renames('.')
                     break
                 else:
                     print( full_n )
@@ -83,15 +118,14 @@ class Console(cmd.Cmd):
 
     def do_find(self, args):
         if len(args.split()) == 2:
-            name, directory = args.split(' ')
+            name, directory = args.split()
         elif len(args.split()) == 1:
             name = args
             directory = '.'
 
         for root, dirs, files in os.walk(directory):
             if name in files:
-                os.chdir(os.path.dirname(os.path.join(root, name)))
-                self.prompt = os.getcwd() + ' '
+                return os.path.join(root, name)
 
     def do_EOF(self, line):
         return True

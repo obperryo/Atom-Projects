@@ -1,4 +1,4 @@
-import os, sys, getpass, cmd
+import os, sys,getpass, cmd2
 from colorama import init, Style, Fore
 from termcolor import colored
 from msvcrt import getch
@@ -6,11 +6,13 @@ from msvcrt import getch
 user = os.path.expanduser('~' + getpass.getuser())
 init(autoreset=True)
 
-class Console(cmd.Cmd):
+#TODO: add helps for documenting commands
+#TODO: look into the history
 
+class Console(cmd2.Cmd):
 
     def __init__(self):
-        cmd.Cmd.__init__(self)
+        cmd2.Cmd.__init__(self)
         self.prompt = '^how may I help you? '
         self.intro = self.do_help(arg=None)
         os.chdir('C:\\')
@@ -126,6 +128,9 @@ class Console(cmd.Cmd):
         for root, dirs, files in os.walk(directory):
             if name in files:
                 return os.path.join(root, name)
+
+    def help_find(self):
+        print('\n'.join(['find file name, [path]', 'find a file, quicker if path is provided']))
 
     def do_EOF(self, line):
         return True

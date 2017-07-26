@@ -29,7 +29,7 @@ class Console(cmd2.Cmd):
             filename, rename, directory = args.split()
             self.rename_file(filename, rename, directory)
         elif len(args.split()) == 2:
-            if '/' or '\\' in args:
+            if '*' in args:
                 filext, directory = args.split()
                 self.rename_files(filext, directory)
             elif '.' in args:
@@ -122,7 +122,7 @@ class Console(cmd2.Cmd):
         self.pathcheck(directory)
         print(Style.BRIGHT + colored(os.getcwd(),'yellow'))
 
-        if directory == '.':
+        if filext:
             for f in glob.glob(filext, recursive=True):
                 self.direnames(f)
         else:

@@ -6,7 +6,6 @@ from msvcrt import getch
 user = os.path.expanduser('~' + getpass.getuser())
 init(autoreset=True)
 
-#TODO: fix why if is falling through
 #TODO: add color to prints
 
 class Console(cmd2.Cmd):

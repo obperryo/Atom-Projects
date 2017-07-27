@@ -119,7 +119,7 @@ class Console(cmd2.Cmd):
         if filext:
             directory = glob.glob(filext, recursive=True)
         else:
-            directory = os.listdir()
+            directory = os.listdir() 
 
         for f in directory:
             print(colored(f,'cyan','on_magenta'))

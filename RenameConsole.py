@@ -69,11 +69,6 @@ class Console(cmd2.Cmd):
             'rename one or many files. options are either no arguments or file name, new name and path;',
             'file name and new name; file extension and path; just file extension or path']))
 
-    def do_EOF(self):
-        return True
-    def help_EOF(self):
-        print('\n'.join(['EOF', 'quit']))
-
     def pathcheck(self, directory):
         if os.path.isdir(directory):
             os.chdir(directory)
@@ -122,36 +117,36 @@ class Console(cmd2.Cmd):
         print(Style.BRIGHT + colored(os.getcwd(),'yellow'))
 
         if filext:
-            for f in glob.glob(filext, recursive=True):
-                self.direnames(f)
+            directory = glob.glob(filext, recursive=True)
         else:
-            for f in os.listdir():
-                self.direnames(f)
+            directory = os.listdir()
 
-    def direnames(self, f):
-        print(colored(f,'cyan','on_magenta'))
-        f_name, f_ext = os.path.splitext(f)
-        full_n = colored(f_name,'cyan')+colored(f_ext,'magenta')
-        print( full_n )
-        print(colored(f_name,'cyan'))
+        for f in directory:
+            print(colored(f,'cyan','on_magenta'))
+            f_name, f_ext = os.path.splitext(f)
+            full_n = colored(f_name,'cyan')+colored(f_ext,'magenta')
+            print( full_n )
+            print(colored(f_name,'cyan'))
 
-        new_name = input( Style.BRIGHT + colored('Enter new name: ','cyan' ))
+            new_name = input( Style.BRIGHT + colored('Enter new name: ','cyan' ))
 
-        if new_name.strip():
-            if new_name.lower() == 'cancel':
-                self.prompt = 'What now? '
-                sys.exit(self.__init__)
-            elif 'cd' in new_name.lower():
-                command, path = new_name.split()
-                self.do_cd(path or '.')
-                sys.exit(self.__init__)
+            if new_name.strip():
+                if new_name.lower() == 'cancel':
+                    self.prompt = 'What now? '
+                    sys.exit(self.__init__)
+                elif 'cd' in new_name.lower():
+                    command, path = new_name.split()
+                    self.do_cd(path or '.')
+                    self.rename_files(filext = None)
+                else:
+                    print( full_n )
+                    print('{}{}'.format(Style.BRIGHT + colored(new_name.strip(),'cyan' ), colored(f_ext.strip(),'magenta')))
+                    rename = '{}{}'.format(new_name.strip(), f_ext.strip())
+                    self.guard(f, rename)
             else:
-                print( full_n )
-                print('{}{}'.format(Style.BRIGHT + colored(new_name.strip(),'cyan' ), colored(f_ext.strip(),'magenta')))
-                rename = '{}{}'.format(new_name.strip(), f_ext.strip())
-                self.guard(f, rename)
-        else:
-            print(Style.BRIGHT + 'Next file is')
+                print(Style.BRIGHT + 'Next file is')
+
+        sys.exit(self.__init__)
 
     def find(self, name, directory = '.'):
         for root, dirs, files in os.walk(directory):
